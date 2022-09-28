@@ -42,8 +42,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>320</y>
+     <x>160</x>
+     <y>230</y>
      <width>101</width>
      <height>21</height>
     </rect>
@@ -55,8 +55,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>320</y>
+     <x>550</x>
+     <y>230</y>
      <width>101</width>
      <height>21</height>
     </rect>
@@ -76,6 +76,26 @@
    </property>
    <property name="text">
     <string>Comparador de planilhas EXCEL</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="filename">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>320</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="filename2">
+   <property name="geometry">
+    <rect>
+     <x>412</x>
+     <y>320</y>
+     <width>171</width>
+     <height>20</height>
+    </rect>
    </property>
   </widget>
  </widget>
