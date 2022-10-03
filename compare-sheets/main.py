@@ -57,7 +57,7 @@ class MainWindow(QDialog):
 
         
         for index, row in planilha01.iterrows():
-            codigo = (planilha01.loc[0:,[cod1]])
+            codigo = (planilha01.loc[0:,[cod1]]) # passar row como intervalo da lista
             quantidade = (planilha01.loc[0:,[qtd1]])
             list_qtd.append(quantidade)
             list_cod.append(codigo)
