@@ -14,7 +14,7 @@ list_qtd = []
 list_cod = []
 list_qtd2 = []
 list_cod2 = []
-output_cod = ['', '']
+output_cod = []
 output_qtd = []
 #                                                 --- PANDAS VERSION
 class MainWindow(QDialog):
@@ -23,13 +23,15 @@ class MainWindow(QDialog):
         super(MainWindow, self).__init__()
         super().__init__()
         
-        loadUi("C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets\\up_file-screen.ui", self)
+        # loadUi("C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets\\up_file-screen.ui", self)
+        loadUi("D:\\Programação\\CompareSheets\\compare-sheets\\up_file-screen.ui", self)
         self.browse.clicked.connect(self.get_first_sheet)
         self.browse2.clicked.connect(self.get_sec_sheet)
         self.comparar_btn.clicked.connect(self.comparar)
 
     def get_first_sheet(self):
-        get_version_old = QFileDialog.getOpenFileName(self, 'Open file', 'C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets')         # pega o arquivo
+        # get_version_old = QFileDialog.getOpenFileName(self, 'Open file', 'C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets')         # pega o arquivo
+        get_version_old = QFileDialog.getOpenFileName(self, 'Open file', 'D:\\Programação\\CompareSheets\\compare-sheets') 
         self.filename.setText(get_version_old[0])  
         file_path = (get_version_old[0]) # caminho 
 
@@ -51,7 +53,8 @@ class MainWindow(QDialog):
             list_cod.append(row[cod1])
 
     def get_sec_sheet(self):
-        get_version_new = QFileDialog.getOpenFileName(self, 'Open file', 'C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets') # pega o arquivo
+        # get_version_new = QFileDialog.getOpenFileName(self, 'Open file', 'C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets') # pega o arquivo
+        get_version_new = QFileDialog.getOpenFileName(self, 'Open file', 'D:\\Programação\\CompareSheets\\compare-sheets')
         self.filename2.setText(get_version_new[0])
         file_path2 = (get_version_new[0])
         paths.append(file_path2)
@@ -68,57 +71,31 @@ class MainWindow(QDialog):
             list_cod2.append(row[cod2])
         
     def comparar(self):
-        
-        # for cod in list_cod:
-        #     if cod in list_cod2:
-        #         # if cod in sheet1:
-        #         print(f"{cod} - - - - -Ele é igual")
-        #     else:
-        #         print("Ele nao é igual")
-        #         #     output.append(sheet1[])
-        #         output.append(cod)
 
-# vendo qual das duas planilhas é maior, para se ter como  base no for
-
-    # comparando estritamente a questao do codigo das planilhas
         if len(sheet1[0]) > len(sheet2[0]):
             for cod in list_cod:
-                if cod in list_cod2:
-                    print(f"{cod} - - - - -Ele é igual")
-                else:
-                    print("Ele nao é igual")
-    # comparando estritamente a quantidade 
+                if cod not in list_cod2:
+                    output_cod.append(cod)       
+    
             for qtd in list_qtd:
-                if qtd in list_qtd:
-                    print(f"{qtd}  - - - - -É igual")
-                else:
-                    print(f"{qtd}  - - - - -NAO É IGUAL")
-
-        # comparando estritamente a questao do codigo das planilhas
+                if qtd in list_qtd: 
+                    output_qtd.append(qtd)
+                
         elif len(sheet2[0]) > len(sheet1[0]):
             for cod2 in list_cod2:
-                if cod2 in list_cod:
-                    print(f"{cod2} - - - - --  É IGUAL")
-                    output[0].append
-                else:
-                    print(f"{cod2} - - - - --  NAO É igual")
 
-    # comparando estritamente a quantidade         
+                if cod2 not in list_cod:  
+                    output_cod.append(cod2)
+                    # pensar numa forma de comparar a quantidade
             for qtd2 in list_qtd:
-                if qtd2 in list_qtd:
-                    print(f"{qtd2}  - - - - -É igual")
-                else:
-                    print(f"{qtd2}  - - - - -NAO É IGUAL")
-        print(len(sheet2[0]))
-        print(len(sheet1[0]))
-
-            # for y in list_qtd2:
-            #     if i == y:
-            #         print(f"{i} é igual a {y} - -- -São iguais")
-            #     else:
-            #         print(f"{i} NAO é igual a {y} - -- - NAO São iguais")
-        print("Saiu do loop")
-       
+                if qtd2 not in list_qtd:      
+                    output_qtd.append(qtd2)
+        # df = pd.DataFrame((zip(output_cod, output_qtd)), columns=["Codigo", "Quantidade"])
+        print(output_qtd)
+        print(output_cod)
+        # output = pd.DataFrame(output_qtd, output_cod, columns="Quantidade", "Código")
+        # output = output_qtd, output_cod
+        
 app = QApplication(sys.argv)
 mainwindow = MainWindow()
 widget = QtWidgets.QStackedWidget()
