@@ -1,4 +1,3 @@
-
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QListWidgetItem, QPushButton
 from PyQt5.QtCore import Qt
@@ -16,6 +15,7 @@ list_qtd2 = []
 list_cod2 = []
 output_cod = []
 output_qtd = []
+output = []
 #                                                 --- PANDAS VERSION
 class MainWindow(QDialog):
     
@@ -23,15 +23,15 @@ class MainWindow(QDialog):
         super(MainWindow, self).__init__()
         super().__init__()
         
-        # loadUi("C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets\\up_file-screen.ui", self)
-        loadUi("D:\\Programação\\CompareSheets\\compare-sheets\\up_file-screen.ui", self)
+        loadUi("C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets\\up_file-screen.ui", self)
+        # loadUi("D:\\Programação\\CompareSheets\\compare-sheets\\up_file-screen.ui", self)
         self.browse.clicked.connect(self.get_first_sheet)
         self.browse2.clicked.connect(self.get_sec_sheet)
         self.comparar_btn.clicked.connect(self.comparar)
 
     def get_first_sheet(self):
-        # get_version_old = QFileDialog.getOpenFileName(self, 'Open file', 'C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets')         # pega o arquivo
-        get_version_old = QFileDialog.getOpenFileName(self, 'Open file', 'D:\\Programação\\CompareSheets\\compare-sheets') 
+        get_version_old = QFileDialog.getOpenFileName(self, 'Open file', 'C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets')         # pega o arquivo
+        # get_version_old = QFileDialog.getOpenFileName(self, 'Open file', 'D:\\Programação\\CompareSheets\\compare-sheets') 
         self.filename.setText(get_version_old[0])  
         file_path = (get_version_old[0]) # caminho 
 
@@ -53,8 +53,8 @@ class MainWindow(QDialog):
             list_cod.append(row[cod1])
 
     def get_sec_sheet(self):
-        # get_version_new = QFileDialog.getOpenFileName(self, 'Open file', 'C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets') # pega o arquivo
-        get_version_new = QFileDialog.getOpenFileName(self, 'Open file', 'D:\\Programação\\CompareSheets\\compare-sheets')
+        get_version_new = QFileDialog.getOpenFileName(self, 'Open file', 'C:\\Users\\Fiscal\\Documents\\GitHub\\CompareSheets\\compare-sheets') # pega o arquivo
+        # get_version_new = QFileDialog.getOpenFileName(self, 'Open file', 'D:\\Programação\\CompareSheets\\compare-sheets')
         self.filename2.setText(get_version_new[0])
         file_path2 = (get_version_new[0])
         paths.append(file_path2)
@@ -66,35 +66,53 @@ class MainWindow(QDialog):
         cod2 = (lista_colunas_s2[3])
         qtd2 = (lista_colunas_s2[1])
 
+        
         for index, row in planilha02.iterrows():
+
             list_qtd2.append(row[qtd2])
             list_cod2.append(row[cod2])
+
         
     def comparar(self):
-
+        # print()
+        # print(sheet2[0].values)
         if len(sheet1[0]) > len(sheet2[0]):
-            for cod in list_cod:
-                if cod not in list_cod2:
-                    output_cod.append(cod)       
-    
-            for qtd in list_qtd:
-                if qtd in list_qtd: 
-                    output_qtd.append(qtd)
-                
-        elif len(sheet2[0]) > len(sheet1[0]):
-            for cod2 in list_cod2:
+            for row in sheet1[0].values:
+                print(row)
+                if row not in sheet2[0].values:
+                    output.append(row)
 
-                if cod2 not in list_cod:  
-                    output_cod.append(cod2)
-                    # pensar numa forma de comparar a quantidade
-            for qtd2 in list_qtd:
-                if qtd2 not in list_qtd:      
-                    output_qtd.append(qtd2)
-        # df = pd.DataFrame((zip(output_cod, output_qtd)), columns=["Codigo", "Quantidade"])
-        print(output_qtd)
-        print(output_cod)
-        # output = pd.DataFrame(output_qtd, output_cod, columns="Quantidade", "Código")
-        # output = output_qtd, output_cod
+        elif len(sheet2[0]) > len(sheet1[0]):
+            for row in sheet2[0].values:
+                print(row)
+                if row not in sheet1[0].values:
+                    output.append(row)
+                    
+        print(output)
+
+        dados = pd.DataFrame(data = output)
+
+        dados.to_excel('saidas.xlsx', index= False)
+
+
+            # for cod in list_cod:
+            #     if cod not in list_cod2:
+            #         output_cod.append(cod)       
+            # for qtd in list_qtd:
+            #     if qtd in list_qtd: 
+            #         output_qtd.append(qtd)
+                
+        # elif len(sheet2[0]) > len(sheet1[0]):
+        #     for cod2 in list_cod2:
+        #         if cod2 not in list_cod:  
+        #             output_cod.append(cod2)
+        #             if cod2 in sheet1[0].values:
+        #                 print(sheet1[0].values)
+                    
+        #     for qtd2 in list_qtd:
+        #         if qtd2 not in list_qtd:      
+        #             output_qtd.append(qtd2)
+
         
 app = QApplication(sys.argv)
 mainwindow = MainWindow()
