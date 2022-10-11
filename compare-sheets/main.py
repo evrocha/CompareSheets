@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUi
 import sys;
 import pandas as pd
+import numpy as np
 
 sheet1 = []
 sheet2 = []
@@ -74,19 +75,41 @@ class MainWindow(QDialog):
 
         
     def comparar(self):
-        # print()
-        # print(sheet2[0].values)
-        if len(sheet1[0]) > len(sheet2[0]):
-            for row in sheet1[0].values:
-                print(row)
-                if row not in sheet2[0].values:
-                    output.append(row)
+        df1 = pd.DataFrame(sheet1[0])
+        df1.sort_index(inplace=True)
+        df2 = pd.DataFrame(sheet2[0])
+        df2.sort_index(inplace=True)
+        resultado = pd.DataFrame()
 
-        elif len(sheet2[0]) > len(sheet1[0]):
-            for row in sheet2[0].values:
-                print(row)
-                if row not in sheet1[0].values:
-                    output.append(row)
+        planilha02 = pd.read_excel(paths[0])
+        planilha02 = planilha02.reset_index()
+        planilha01 = pd.read_excel(paths[1])
+        planilha01 = planilha01.reset_index()
+
+        print(df1.columns.to_list())    
+        print(df2.columns.to_list())    
+
+        # print(planilha01.columns.to_list())
+        # print(planilha02.columns.to_list())
+
+        resultado['Códigos Alterados'] = np.where((df2[planilha02.columns.to_list()[1]] != df1[planilha02.columns.to_list()[1]]), df2[planilha02.columns.to_list()[1]], np.nan)
+        resultado['Quantidade Alteradas'] = np.where((df2[planilha02.columns.to_list()[3]] != df1[planilha02.columns.to_list()[3]]), df2[planilha02.columns.to_list()[3]], np.nan)
+
+        # print(resultado)
+
+        
+       
+        # if len(sheet1[0]) > len(sheet2[0]):
+        #     for row in sheet1[0].values:
+        #         print(row)
+        #         if row not in sheet2[0].values:
+        #             output.append(row)
+
+        # elif len(sheet2[0]) > len(sheet1[0]):
+        #     for row in sheet2[0].values:
+        #         print(row)
+        #         if row not in sheet1[0].values:
+        #             output.append(row)
                     
         print(output)
 
@@ -112,8 +135,7 @@ class MainWindow(QDialog):
         #     for qtd2 in list_qtd:
         #         if qtd2 not in list_qtd:      
         #             output_qtd.append(qtd2)
-
-        
+       
 app = QApplication(sys.argv)
 mainwindow = MainWindow()
 widget = QtWidgets.QStackedWidget()
