@@ -59,10 +59,13 @@ class MainWindow(QDialog):
         self.filename2.setText(get_version_new[0])
         file_path2 = (get_version_new[0])
         paths.append(file_path2)
+
         updated_sheet = pd.read_excel(file_path2)
         sheet2.append(updated_sheet)
+
         planilha02 = pd.read_excel(file_path2)
         planilha02 = planilha02.reset_index()
+
         lista_colunas_s2 = planilha02.columns.to_list()
         cod2 = (lista_colunas_s2[3])
         qtd2 = (lista_colunas_s2[1])
@@ -76,24 +79,55 @@ class MainWindow(QDialog):
         
     def comparar(self):
         df1 = pd.DataFrame(sheet1[0])
-        df1.sort_index(inplace=True)
+        # df1.sort_index(inplace=True)
         df2 = pd.DataFrame(sheet2[0])
-        df2.sort_index(inplace=True)
-        resultado = pd.DataFrame()
+        # df2.sort_index(inplace=True)
+
+        
+        
+        coluna_qtd01 = pd.read_excel(paths[0], index_col=None, na_values=['NA'], usecols= [df1.columns.to_list()[0]])
+        coluna_codigo01 = pd.read_excel(paths[0], index_col=None, na_values=['NA'], usecols= [df1.columns.to_list()[2]])
+        
+        coluna_qtd02 = pd.read_excel(paths[1], index_col=None, na_values=['NA'], usecols= [df2.columns.to_list()[0]])
+        coluna_codigo02 = pd.read_excel(paths[1], index_col=None, na_values=['NA'], usecols= [df2.columns.to_list()[2]])
+        
+        # resultado = pd.DataFrame()
+
+        # df2['resultado_comparacao-codigo'] = np.where((coluna_codigo01 != coluna_codigo02))
+        # df2['resultado_comparacao-quantidade'] = np.where((coluna_qtd01!= coluna_qtd02))
+        
+        # resultado.to_excel('saida-output.xlsx')
+        # print(coluna_codigo01, "11111111")
+        print(coluna_codigo02, '222222222')
+        # resultado.to_excel("output.xlsx")  
+        
 
         planilha02 = pd.read_excel(paths[0])
-        planilha02 = planilha02.reset_index()
+        planilha02.sort_index(inplace=True)
+        # planilha02 = planilha02.reset_index()
         planilha01 = pd.read_excel(paths[1])
-        planilha01 = planilha01.reset_index()
+        planilha01.sort_index(inplace=True)
+        # planilha01 = planilha01.reset_index()
 
-        print(df1.columns.to_list())    
-        print(df2.columns.to_list())    
+        # print(planilha01["QUANTIDADE"])
+        # print(planilha01["CÓDIGO"])
+
+        quantidades_p1 = []
+        quantidades_p1.append(planilha01["QUANTIDADE"])
+        quantidades_p2 = []
+        quantidades_p2.append(planilha02['QUANTIDADE'])
+
+        planilha02['result'] = np.where(quantidades_p1 != quantidades_p2, planilha02['Column1'], np.nan)
+        print(quantidades_p1)
+
+        # print(df1.columns.to_list()[1])    
+        # print(df2.columns.to_list()[3])    
 
         # print(planilha01.columns.to_list())
         # print(planilha02.columns.to_list())
 
-        resultado['Códigos Alterados'] = np.where((df2[planilha02.columns.to_list()[1]] != df1[planilha02.columns.to_list()[1]]), df2[planilha02.columns.to_list()[1]], np.nan)
-        resultado['Quantidade Alteradas'] = np.where((df2[planilha02.columns.to_list()[3]] != df1[planilha02.columns.to_list()[3]]), df2[planilha02.columns.to_list()[3]], np.nan)
+        # resultado['Códigos Alterados'] = np.where()
+        # resultado['Quantidade Alteradas'] = np.where()
 
         # print(resultado)
 
@@ -113,9 +147,8 @@ class MainWindow(QDialog):
                     
         print(output)
 
-        dados = pd.DataFrame(data = output)
 
-        dados.to_excel('saidas.xlsx', index= False)
+        
 
 
             # for cod in list_cod:
