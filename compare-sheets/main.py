@@ -1,4 +1,7 @@
 from cgi import print_form
+from math import nan
+from operator import index
+from turtle import pen
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QListWidgetItem, QPushButton
 from PyQt5.QtCore import Qt
@@ -83,6 +86,7 @@ class MainWindow(QDialog):
 
         coluna_qtd01 = pd.read_excel(paths[0], index_col=None, na_values=['NA'], usecols= [df1.columns.to_list()[0]])
         coluna_cod01 = pd.read_excel(paths[1], index_col=None, na_values=['NA'], usecols= [df1.columns.to_list()[2]])
+
         coluna_qtd02 = pd.read_excel(paths[0], index_col=None, na_values=['NA'], usecols= [df2.columns.to_list()[0]])
         coluna_cod02 = pd.read_excel(paths[1], index_col=None, na_values=['NA'], usecols= [df2.columns.to_list()[2]])
 
@@ -93,15 +97,62 @@ class MainWindow(QDialog):
                         # retorna True se for igual, e False se for diferente
 
                         # Objetivo: transformar esse valor de boolean no valor original novamente
+                        # talvez o problema sea q eu to pegando o 'diferentes', eu tenho q pegar o 'i' no np.where
+
         diferentes = [i for i in planilha_02_two_cols.values ==  planilha_01_two_cols.values]
 
-        # print(planilha_01_two_cols.values)
+        # print(planilha_02_two_cols.values[9][1]) # se for mudar só o segundo -> pega só qtd / se mudar só p primeiro pega o cod/ se só dxr um pega os dois
+      
+        for x in range(len(diferentes)):
+            # print(x)
+            # print(diferentes[x])
+           
+            # print(planilha_02_two_cols)
+
+                    # aparentemente dando certo a parte do cdigo
+            if diferentes[x][0] == False: # se o codgo for !=
+                vlr = planilha_02_two_cols.values[x][0] # to pegando apenas o valor da quantidade
+                # print(vlr)
+                if vlr != '':
+                    vlr = planilha_02_two_cols.values[x]
+                    output_qtd.append(vlr)
+
+                    # com erro
+            # if diferentes[0][x] == False:
+            #     vlr2 = planilha_02_two_cols[0][x]
+            #     if vlr2 !='':
+            #         vlr2 = planilha_02_two_cols[0][x]
+            #         output_cod.append(vlr2)
+
+        df3 = pd.DataFrame(data=output_cod)
+        df3.to_excel('data13.xlsx')
+
         print(type(diferentes))
-        print(diferentes)
-        # df3 = pd.DataFrame()
+
+
+
+
+
+
+
+
+        # print(diferentes)
         # for x in diferentes:
-        #     if np.where(diferentes==False):
-        #         rows.append(x)
+        #     indie_w_f = np.column_stack(np.where(x[0] == False)) # pegando o indice de quando o valor é falso, ou seja, diferente entre as planilhas
+            
+        #     output.append(indie_w_f)
+        # print(indie_w_f)
+        # for y in planilha_02_two_cols:
+        #     print(y[indie_w_f])   
+
+        
+        # for y in planilha_01_two_cols.values:
+        #     print(y[0])
+
+        # print(output_qtd)
+
+        # df3 = pd.DataFrame(data=output_qtd)
+        # df3.to_excel('data2.xlsx')
 
 
 app = QApplication(sys.argv)
